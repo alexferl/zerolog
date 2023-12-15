@@ -1,0 +1,16 @@
+[[source]]
+url = "https://pypi.org/simple"
+verify_ssl = true
+name = "pypi"
+
+[packages]
+
+
+[dev-packages]
+black = "==23.11.0"
+coverage = "==7.3.3"
+mypy = "==1.7.1"
+pre-commit = "==3.5.0"
+
+[scripts]
+test = "python -m unittest"
