@@ -199,13 +199,13 @@ class Event:
 
     def _caller(self, skip: _int) -> "Event":
         try:
-            tc = getframeinfo(stack()[skip][0])
+            tb = getframeinfo(stack()[skip][0])
         except Exception as e:
             print(f"zerolog: could not get traceback: {e}", file=sys.stderr)
             return self
         self._buf = enc.append_string(
             enc.append_key(self._buf, zerolog.CallerFieldName),
-            zerolog.CallerMarshalFunc(tc),
+            zerolog.CallerMarshalFunc(tb),
         )
         return self
 

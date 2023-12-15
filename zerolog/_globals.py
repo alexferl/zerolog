@@ -3,7 +3,7 @@ from datetime import datetime
 from inspect import Traceback
 from typing import Any, Callable
 
-from .constants import TimeFormatUnix
+from .constants import TimeFormatRFC3339Ms
 from .internal.util.atomic import Int
 from .level import Level
 
@@ -39,8 +39,8 @@ _CallerFieldName = "caller"
 _CallerSkipFrameCount = 1
 
 
-def _caller_marshal_func(tc: Traceback) -> str:
-    return f"{tc.filename}:{tc.lineno}"
+def _caller_marshal_func(tb: Traceback) -> str:
+    return f"{tb.filename}:{tb.lineno}"
 
 
 # CallerMarshalFunc allows customization of global caller marshaling
@@ -67,7 +67,7 @@ _AnyMarshalFunc = json.dumps
 # TimeFormatUnix, TimeFormatUnixMs or TimeFormatUnixMicro the time is formatted as a UNIX
 # timestamp as integer. If set to TimeFormatRFC3339, TimeFormatRFC3339Ms or
 # TimeFormatRFC3339Micro the time is formatted as a RFC3339 date string.
-_TimeFieldFormat = TimeFormatUnix
+_TimeFieldFormat = TimeFormatRFC3339Ms
 
 # TimestampFunc defines the function called to generate a timestamp.
 _TimestampFunc = datetime.now

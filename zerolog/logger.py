@@ -49,7 +49,7 @@ class Logger:
         self._sampler = s
         return self
 
-    # ctx creates a child logger with the field added to its context.
+    # ctx creates a child logger.
     def ctx(self) -> Context:
         context = self._context
         logger = new(self._w)
@@ -147,7 +147,7 @@ class Logger:
     def print(self, *args: Any):
         e = self.debug()
         if e and e.enabled():
-            e.msg("".join((str(x) for x in args)))
+            e.msg("".join(map(str, args[0])))
 
     def new_event(self, lvl: Level, done: Callable[[str], None] | None) -> Event | None:
         enabled = self._should(lvl)

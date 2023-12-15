@@ -32,4 +32,4 @@ from .logger import Context, Hook, Logger, Sampler, new
 
 
 # GlobalLogger is the global logger.
-GlobalLogger = new(sys.stderr).ctx().timestamp().logger()
+GlobalLogger = new(sys.stderr.buffer).ctx().timestamp().logger()

@@ -44,7 +44,7 @@ fmt:
 	pipenv run black .
 
 type:
-	pipenv run mypy .
+	pipenv run mypy zerolog
 
 pre-commit:
 	pipenv run pre-commit
