@@ -70,7 +70,7 @@ def error() -> zerolog.Event | None:
     return zerolog.GlobalLogger.error()
 
 
-# fatal starts a new message with fatal level. The os.exit(1) function
+# fatal starts a new message with fatal level. The sys.exit() function
 # is called by the msg method.
 #
 # You must call msg on the returned event in order to send the event.

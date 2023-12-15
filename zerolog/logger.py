@@ -1,3 +1,4 @@
+import sys
 from dataclasses import dataclass, field
 from typing import Any, Callable, IO, List
 
@@ -100,7 +101,7 @@ class Logger:
     #
     # You must call msg on the returned event in order to send the event.
     def fatal(self) -> Event | None:
-        return self.new_event(Level.FatalLevel, lambda msg: exit(1))
+        return self.new_event(Level.FatalLevel, lambda msg: sys.exit("exit status 1"))
 
     # exception starts a new message with error level.
     #
