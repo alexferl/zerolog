@@ -21,6 +21,7 @@ help:
 
 dev:
 	pipenv install --dev
+	pipenv run pre-commit install
 
 lock:
 	pipenv lock
