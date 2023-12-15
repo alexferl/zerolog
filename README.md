@@ -38,5 +38,5 @@ log.debug().str("Name", "Olivier").send()
 # {"level":"debug","Name":"Olivier","time":"2023-12-14T23:32:26.368Z"}a
 ```
 
-# Credit
+## Credits
 Based on the excellent [zerolog](https://github.com/rs/zerolog) in Go.
