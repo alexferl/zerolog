@@ -83,13 +83,13 @@ class BurstSampler:
         return self.next_sampler.sample(lvl)
 
     def _inc(self) -> int:
-        ms = 100000
-        now = datetime.datetime.now().timestamp() * ms
+        micro = 100000
+        now = datetime.datetime.now().timestamp() * micro
         reset_at = self._reset_at.load()
         if now > reset_at:
             c = 1
             self._counter.store(c)
-            new_reset_at = int(now + (self.period * ms))
+            new_reset_at = int(now + (self.period * micro))
             c = self._reset_at.compare_and_swap(reset_at, new_reset_at)
         else:
             c = self._counter.add(1)
