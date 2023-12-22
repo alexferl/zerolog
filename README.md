@@ -82,7 +82,7 @@ def outer():
     middle()
 
 
-# "level":"error","stack":[{"source": "/app/test.py", "line": "9", "func": "main"}, {"source": "/app/test.py", "line": "23", "func": "outer"}, {"source": "/app/test.py", "line": "19", "func": "middle"}, {"source": "/app/test.py", "line": "15", "func": "inner"}],"exception":"division by zero","time":"2023-12-15T00:28:04.255Z","message":"uh oh"}
+# {"level":"error","stack":[{"source": "/app/test.py", "line": "9", "func": "main"}, {"source": "/app/test.py", "line": "23", "func": "outer"}, {"source": "/app/test.py", "line": "19", "func": "middle"}, {"source": "/app/test.py", "line": "15", "func": "inner"}],"exception":"division by zero","time":"2023-12-15T00:28:04.255Z","message":"uh oh"}
 ```
 > Note: `zerolog.ExceptionStackMarshaler` must be set in order for `stack` to output anything.
 
