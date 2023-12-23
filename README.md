@@ -189,7 +189,7 @@ Some settings can be changed and will be applied to all loggers:
 ### Advanced Fields
 
 * `exc`: Takes an `Exception` and renders it as a string using the `zerolog.ExceptionFieldName` field name.
-* `fn`: Runs a function only if the level is enabled.
+* `func`: Runs a function only if the level is enabled.
 * `timestamp`: Inserts a timestamp field with `zerolog.TimestampFieldName` field name, formatted using `zerolog.TimeFieldFormat`.
 * `time`: Adds a field with time formatted with `zerolog.TimeFieldFormat`.
 * `any`: Uses `zerolog.AnyMarshalFunc` to marshal the value.
