@@ -15,7 +15,7 @@ class TestSampler(unittest.TestCase):
             want_min: int
             want_max: int
 
-        samplers = [
+        tests = [
             TestCase("basic_sampler_1", BasicSampler(1), 100, 100, 100),
             TestCase("basic_sampler_5", BasicSampler(5), 100, 20, 20),
             TestCase("random_sampler", RandomSampler(5), 100, 10, 30),
@@ -25,11 +25,11 @@ class TestSampler(unittest.TestCase):
             ),
         ]
 
-        for s in samplers:
+        for t in tests:
             got = 0
-            for _ in range(s.total, 0, -1):
-                if s.sampler.sample(Level.DebugLevel):
+            for _ in range(t.total, 0, -1):
+                if t.sampler.sample(Level.DebugLevel):
                     got += 1
 
-            msg = f"{s.name}.sample(0) == true {got} on {s.total}, want [{s.want_min}, {s.want_max}]"
-            self.assertFalse(got < s.want_min or got > s.want_max, msg)
+            msg = f"{t.name}.sample(0) == true {got} on {t.total}, want [{t.want_min}, {t.want_max}]"
+            self.assertFalse(got < t.want_min or got > t.want_max, msg)

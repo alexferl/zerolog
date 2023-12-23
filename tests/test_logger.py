@@ -12,7 +12,7 @@ class TestLog(unittest.TestCase):
         log.log().msg("")
         got = decode_if_binary_to_string(out.read())
         want = "{}\n"
-        self.assertEqual(got, want)
+        self.assertEqual(want, got)
 
     def test_one_field(self):
         out = io.BytesIO()
@@ -20,7 +20,7 @@ class TestLog(unittest.TestCase):
         log.log().str("foo", "bar").msg("")
         got = decode_if_binary_to_string(out.read())
         want = '{"foo":"bar"}\n'
-        self.assertEqual(got, want)
+        self.assertEqual(want, got)
 
     def test_two_field(self):
         out = io.BytesIO()
@@ -28,7 +28,7 @@ class TestLog(unittest.TestCase):
         log.log().str("foo", "bar").int("n", 123).msg("")
         got = decode_if_binary_to_string(out.read())
         want = '{"foo":"bar","n":123}\n'
-        self.assertEqual(got, want)
+        self.assertEqual(want, got)
 
 
 class TestInfo(unittest.TestCase):
@@ -38,7 +38,7 @@ class TestInfo(unittest.TestCase):
         log.info().msg("")
         got = decode_if_binary_to_string(out.read())
         want = '{"level":"info"}\n'
-        self.assertEqual(got, want)
+        self.assertEqual(want, got)
 
     def test_one_field(self):
         out = io.BytesIO()
@@ -46,7 +46,7 @@ class TestInfo(unittest.TestCase):
         log.info().str("foo", "bar").msg("")
         got = decode_if_binary_to_string(out.read())
         want = '{"level":"info","foo":"bar"}\n'
-        self.assertEqual(got, want)
+        self.assertEqual(want, got)
 
     def test_two_field(self):
         out = io.BytesIO()
@@ -54,7 +54,7 @@ class TestInfo(unittest.TestCase):
         log.info().str("foo", "bar").int("n", 123).msg("")
         got = decode_if_binary_to_string(out.read())
         want = '{"level":"info","foo":"bar","n":123}\n'
-        self.assertEqual(got, want)
+        self.assertEqual(want, got)
 
 
 class TestEmptyLevelFieldName(unittest.TestCase):
@@ -72,4 +72,4 @@ class TestEmptyLevelFieldName(unittest.TestCase):
         log.info().str("foo", "bar").int("n", 123).msg("")
         got = decode_if_binary_to_string(out.read())
         want = '{"foo":"bar","n":123}\n'
-        self.assertEqual(got, want)
+        self.assertEqual(want, got)

@@ -2,12 +2,10 @@ import datetime
 import random
 from abc import abstractmethod
 from dataclasses import dataclass
-from typing import TYPE_CHECKING, Protocol
+from typing import Protocol
 
 from .internal.util.atomic import Int
-
-if TYPE_CHECKING:
-    from .level import Level
+from .level import Level
 
 
 # Sampler defines an interface to a log sampler.
@@ -15,7 +13,7 @@ class Sampler(Protocol):
     # Sample returns true if the event should be part of the sample, false if
     # the event should be dropped.
     @abstractmethod
-    def sample(self, lvl: "Level") -> bool:
+    def sample(self, lvl: Level) -> bool:
         pass
 
 
@@ -25,7 +23,7 @@ class RandomSampler:
     def __init__(self, n: int = 0):
         self._n = n
 
-    def sample(self, lvl: "Level") -> bool:
+    def sample(self, lvl: Level) -> bool:
         if self._n <= 0:
             return False
         if random.randint(0, self._n) != 0:
@@ -48,7 +46,7 @@ class BasicSampler:
         self.n = n
         self._counter = Int(0)
 
-    def sample(self, lvl: "Level") -> bool:
+    def sample(self, lvl: Level) -> bool:
         n = self.n
         if n == 1:
             return True
@@ -74,7 +72,7 @@ class BurstSampler:
         self._counter = Int(0)
         self._reset_at = Int(0)
 
-    def sample(self, lvl: "Level") -> bool:
+    def sample(self, lvl: Level) -> bool:
         if self.burst > 0 and self.period > 0:
             if self._inc() <= self.burst:
                 return True
@@ -105,7 +103,7 @@ class LevelSampler:
     warn_sampler: Sampler | None = None
     error_sampler: Sampler | None = None
 
-    def sample(self, lvl: "Level") -> bool:
+    def sample(self, lvl: Level) -> bool:
         match lvl:
             case lvl.TraceLevel:
                 if self.trace_sampler is not None:

@@ -40,3 +40,16 @@ class Level(IntEnum):
                 return "disabled"
             case self.NoLevel:
                 return ""
+
+    def __str__(self):
+        return self.string()
+
+
+DebugLevel = Level.DebugLevel
+InfoLevel = Level.InfoLevel
+WarnLevel = Level.WarnLevel
+ErrorLevel = Level.ErrorLevel
+FatalLevel = Level.FatalLevel
+NoLevel = Level.NoLevel
+Disabled = Level.Disabled
+TraceLevel = Level.TraceLevel

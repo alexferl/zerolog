@@ -5,10 +5,10 @@ from typing import TYPE_CHECKING, Any, List
 import zerolog
 from zerolog import constants
 from .encoder_json import enc
+from .event import Event
+from .level import Level
 
 if TYPE_CHECKING:
-    from .event import Event
-    from .level import Level
     from .logger import Logger
 
 # needed because some Context methods name conflict with types
@@ -19,7 +19,7 @@ _bool = bool
 
 
 class TimestampHook:
-    def run(self, e: "Event", lvl: "Level", msg: str):
+    def run(self, e: Event, lvl: Level, msg: str):
         e.timestamp()
 
 
@@ -30,7 +30,7 @@ th = TimestampHook()
 class CallerHook:
     caller_skip_frame_count: int = constants.MIN_INT32
 
-    def run(self, e: "Event", lvl: "Level", msg: str):
+    def run(self, e: Event, lvl: Level, msg: str):
         match self.caller_skip_frame_count:
             case constants.MIN_INT32:
                 # Extra frames to skip (added by hook infra).

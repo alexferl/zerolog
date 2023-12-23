@@ -53,16 +53,17 @@ class Logger:
     # ctx creates a child logger.
     def ctx(self) -> Context:
         context = self._context
-        logger = new(self._w)
+        self._context = b""
         if len(context) > 0:
-            logger._context += context
+            self._context += context
         else:
             # This is needed for append_key to not check len of input
             # thus making it inlinable
-            logger._context = enc.append_begin_marker(self._context)
+            self._context = enc.append_begin_marker(self._context)
 
-        return Context(logger)
+        return Context(self)
 
+    # hook returns a logger with the h Hook.
     def hook(self, h: Hook) -> "Logger":
         self._hooks.append(h)
         return self

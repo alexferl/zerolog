@@ -95,5 +95,54 @@ log.fatal().msg("this is very bad")
 # {"level":"fatal","time":"2023-12-15T00:22:03.664Z","message":"this is very bad"}
 # exit status 1
 ```
+
+### Log Sampling
+```python
+import zerolog
+from zerolog import log
+
+sampled = log.sample(zerolog.BasicSampler(n=10))
+sampled.info().msg("will be logged every 10 messages")
+
+# {"level":"info","time":"2023-12-22T21:34:15.205Z","message":"will be logged every 10 messages"}
+```
+
+More advanced sampling:
+```python
+import zerolog
+from zerolog import log
+
+# Will let 5 debug messages per period of 1 second.
+# Over 5 debug message, 1 every 100 debug messages are logged.
+# Other levels are not sampled.
+sampled = log.sample(
+    zerolog.LevelSampler(
+        debug_sampler=BurstSampler(
+            burst=5, period=1, next_sampler=zerolog.BasicSampler(n=100)
+        )
+    )
+)
+sampled.debug().msg("hello world")
+
+# {"level":"debug","time":"2023-12-22T21:38:33.359Z","message":"hello world"}
+```
+
+### Hooks
+```python
+import zerolog
+from zerolog import log
+
+class SeverityHook:
+    def run(self, e: zerolog.Event, lvl: zerolog.Level, msg: str):
+        if lvl != zerolog.NoLevel:
+            e.str("severity", lvl.string())
+
+
+hooked = log.hook(SeverityHook())
+hooked.warn().msg("")
+
+# {"level":"warn","time":"2023-12-22T21:44:48.157Z","severity":"warn"}
+```
+
 ## Credits
 Based on the excellent [zerolog](https://github.com/rs/zerolog) in Go.
