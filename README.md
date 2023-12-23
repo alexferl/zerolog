@@ -158,12 +158,12 @@ Some settings can be changed and will be applied to all loggers:
 * `zerolog.DisableSampling`: If argument is `true`, all sampled loggers will stop sampling and issue 100% of their log events.
 * `zerolog.TimestampFieldName`: Can be set to customize `timestamp` field name.
 * `zerolog.LevelFieldName`: Can be set to customize `level` field name.
-* `zerolog.LevelTraceValue`: Can be set to customize `trace` level field name.
-* `zerolog.LevelDebugValue`: Can be set to customize `debug` level field name.
-* `zerolog.LevelInfoValue`: Can be set to customize `info` level field name.
-* `zerolog.LevelWarnValue`: Can be set to customize `warn` level field name.
-* `zerolog.LevelErrorValue`: Can be set to customize `error` level field name.
-* `zerolog.LevelFatalValue`: Can be set to customize `fatal` level field name.
+* `zerolog.LevelTraceValue`: Can be set to customize `trace` level value.
+* `zerolog.LevelDebugValue`: Can be set to customize `debug` level value.
+* `zerolog.LevelInfoValue`: Can be set to customize `info` level value.
+* `zerolog.LevelWarnValue`: Can be set to customize `warn` level value.
+* `zerolog.LevelErrorValue`: Can be set to customize `error` level value.
+* `zerolog.LevelFatalValue`: Can be set to customize `fatal` level value.
 * `zerolog.MessageFieldName`: Can be set to customize `message` field name.
 * `zerolog.ExceptionFieldName`: Can be set to customize `exception` field name.
 * `zerolog.CallerFieldName`: Can be set to customize `caller` field name.
