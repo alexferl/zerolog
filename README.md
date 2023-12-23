@@ -1,4 +1,5 @@
 # zerolog
+
 Python logging with zero setup JSON output.
 
 ## Getting started
@@ -39,6 +40,7 @@ log.debug().str("Name", "Olivier").send()
 ```
 
 ### Exception Logging
+
 You can log exceptions using the `exc` method.
 
 ```python
@@ -87,6 +89,7 @@ def outer():
 > Note: `zerolog.ExceptionStackMarshaler` must be set in order for `stack` to output anything.
 
 #### Logging Fatal Messages
+
 ```python
 from zerolog import log
 
@@ -97,6 +100,7 @@ log.fatal().msg("this is very bad")
 ```
 
 ### Log Sampling
+
 ```python
 import zerolog
 from zerolog import log
@@ -128,6 +132,7 @@ sampled.debug().msg("hello world")
 ```
 
 ### Hooks
+
 ```python
 import zerolog
 from zerolog import log
@@ -144,5 +149,53 @@ hooked.warn().msg("")
 # {"level":"warn","time":"2023-12-22T21:44:48.157Z","severity":"warn"}
 ```
 
+## Global Settings
+
+Some settings can be changed and will be applied to all loggers:
+
+* `zerolog.GlobalLogger`: You can set this value to customize the global logger (the one used by package level methods).
+* `zerolog.SetGlobalLevel`: Can raise the minimum level of all loggers. Call this with `zerolog.Disabled` to disable logging altogether (quiet mode).
+* `zerolog.DisableSampling`: If argument is `true`, all sampled loggers will stop sampling and issue 100% of their log events.
+* `zerolog.TimestampFieldName`: Can be set to customize `timestamp` field name.
+* `zerolog.LevelFieldName`: Can be set to customize `level` field name.
+* `zerolog.LevelTraceValue`: Can be set to customize `trace` level field name.
+* `zerolog.LevelDebugValue`: Can be set to customize `debug` level field name.
+* `zerolog.LevelInfoValue`: Can be set to customize `info` level field name.
+* `zerolog.LevelWarnValue`: Can be set to customize `warn` level field name.
+* `zerolog.LevelErrorValue`: Can be set to customize `error` level field name.
+* `zerolog.LevelFatalValue`: Can be set to customize `fatal` level field name.
+* `zerolog.MessageFieldName`: Can be set to customize `message` field name.
+* `zerolog.ExceptionFieldName`: Can be set to customize `exception` field name.
+* `zerolog.CallerFieldName`: Can be set to customize `caller` field name.
+* `zerolog.CallerSkipFrameCount`: Can be set to customize the number of stack frames to skip to find the caller.
+* `zerolog.CallerMarshalFunc`: Can be set to customize global caller marshaling.
+* `zerolog.ExceptionStackFieldName`: Can be set to customize `stack` field name.
+* `zerolog.ExceptionStackMarshaler`: Can be set to customize the function called to extract the stack from the exception if any.
+* `zerolog.ExceptionMarshalFunc`: Can be set to customize global exception marshaling.
+* `zerolog.AnyMarshalFunc`: Can be set to customize the function called for `any` marshaling.
+* `zerolog.TimeFieldFormat`: Can be set to customize `time` field value formatting. If set with `zerolog.TimeFormatUnix`, `zerolog.TimeFormatUnixMs` or `zerolog.TimeFormatUnixMicro`, times are formatted as a UNIX timestamp. If set to `zerolog.TimeFormatRFC3339`, `zerolog.TimeFormatRFC3339Ms` or `zerolog.TimeFormatRFC3339Micro` the time is formatted as a RFC3339 date string.
+* `zerolog.TimestampFunc`: Can be set to customize the function called to generate a timestamp.
+* `zerolog.ExceptionHandler`: Called whenever zerolog fails to write an event on its output. If not set, an error is printed on the stderr. This handler must be thread safe and non-blocking.
+
+## Field Types
+
+### Standard Types
+
+* `str`
+* `bool`
+* `int`
+* `float`
+
+### Advanced Fields
+
+* `exc`: Takes an `Exception` and renders it as a string using the `zerolog.ExceptionFieldName` field name.
+* `fn`: Runs a function only if the level is enabled.
+* `timestamp`: Inserts a timestamp field with `zerolog.TimestampFieldName` field name, formatted using `zerolog.TimeFieldFormat`.
+* `time`: Adds a field with time formatted with `zerolog.TimeFieldFormat`.
+* `any`: Uses `zerolog.AnyMarshalFunc` to marshal the value.
+
+Most fields are also available in the list format (`strs` for `List[str]`, `bools` for `List[bool]` etc.)
+
 ## Credits
+
 Based on the excellent [zerolog](https://github.com/rs/zerolog) in Go.

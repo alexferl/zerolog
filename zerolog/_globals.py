@@ -60,7 +60,7 @@ def _exception_marshal_func(e: Exception) -> Any:
 # ExceptionMarshalFunc allows customization of global exception marshaling
 _ExceptionMarshalFunc = _exception_marshal_func
 
-# AnyMarshalFunc allows customization of Any marshaling.
+# AnyMarshalFunc allows customization of any marshaling.
 _AnyMarshalFunc = json.dumps
 
 # TimeFieldFormat defines the time format of the time field type. If set to

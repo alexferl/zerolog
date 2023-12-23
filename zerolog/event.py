@@ -1,6 +1,7 @@
 import builtins
 import sys
 from dataclasses import dataclass, field
+from datetime import datetime
 from inspect import getframeinfo, stack
 from typing import Any, Callable, IO, List
 
@@ -35,7 +36,7 @@ class Event:
     def enabled(self) -> bool:
         return self._level != Level.Disabled
 
-    # discard disables the event so msg(f) won't print it.
+    # discard disables the event so msg() won't print it.
     def discard(self):
         self._level = Level.Disabled
         return
@@ -80,8 +81,8 @@ class Event:
                 self._w.write(self._buf)
                 self._w.seek(0)
 
-    # func allows an anonymous func to run only if the event is enabled.
-    def func(self, f: Callable[["Event"], None]) -> "Event":
+    # fn allows an anonymous function to run only if the event is enabled.
+    def fn(self, f: Callable[["Event"], None]) -> "Event":
         if self.enabled():
             f(self)
         return self
@@ -179,6 +180,13 @@ class Event:
             enc.append_key(self._buf, zerolog.TimestampFieldName),
             zerolog.TimestampFunc(),
             zerolog.TimeFieldFormat,
+        )
+        return self
+
+    # time adds the field key with t formatted as string using zerolog.TimeFieldFormat.
+    def time(self, key: _str, t: datetime) -> "Event":
+        self._buf = enc.append_time(
+            enc.append_key(self._buf, key), t, zerolog.TimeFieldFormat
         )
         return self
 

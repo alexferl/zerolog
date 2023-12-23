@@ -1,5 +1,6 @@
 import builtins
 from dataclasses import dataclass
+from datetime import datetime
 from typing import TYPE_CHECKING, Any, List
 
 import zerolog
@@ -129,6 +130,13 @@ class Context:
     # NOTE: It won't dedupe the "time" key if the *Context has one already.
     def timestamp(self) -> "Context":
         self._l = self._l.hook(th)
+        return self
+
+    # time adds the field key with t formatted as string using zerolog.TimeFieldFormat.
+    def time(self, key: _str, t: datetime) -> "Context":
+        self._l._context = enc.append_time(
+            enc.append_key(self._l._context, key), t, zerolog.TimeFieldFormat
+        )
         return self
 
     # caller adds the file:line of the caller with the zerolog.CallerFieldName key.
