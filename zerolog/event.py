@@ -81,8 +81,8 @@ class Event:
                 self._w.write(self._buf)
                 self._w.seek(0)
 
-    # fn allows an anonymous function to run only if the event is enabled.
-    def fn(self, f: Callable[["Event"], None]) -> "Event":
+    # func allows an anonymous function to run only if the event is enabled.
+    def func(self, f: Callable[["Event"], None]) -> "Event":
         if self.enabled():
             f(self)
         return self
