@@ -1,4 +1,4 @@
-# zerolog
+# zerolog [![codecov](https://codecov.io/gh/alexferl/zerolog/graph/badge.svg?token=UlzN4ouBZv)](https://codecov.io/gh/alexferl/zerolog)
 
 Python logging with zero setup JSON output.
 
