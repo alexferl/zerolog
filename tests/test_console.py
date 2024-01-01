@@ -7,31 +7,6 @@ from typing import Any, Dict, IO
 import zerolog
 from zerolog import time
 
-import zerolog
-from zerolog import log
-
-zerolog.GlobalLogger = log.output(zerolog.ConsoleWriter())
-
-log.info().str("listen", ":8080").int("pid", 37556).msg("Starting listener")
-log.debug().str("database", "myapp").str("host", "localhost:4962").int(
-    "pid", 37556
-).msg("Access")
-log.info().str("method", "GET").str("path", "/users").int("pid", 37556).int(
-    "resp_time", 23
-).msg("Access")
-log.info().str("method", "POST").str("path", "/posts").int("pid", 37556).int(
-    "resp_time", 532
-).msg("Access")
-log.warn().str("method", "POST").str("path", "/users").int("pid", 37556).int(
-    "resp_time", 23
-).msg("Slow request")
-log.info().str("method", "GET").str("path", "/users").int("pid", 37556).int(
-    "resp_time", 10
-).msg("Access")
-log.error().exc(Exception("connection reset by peer")).str("database", "myapp").int(
-    "pid", 37556
-).msg("Database connection lost")
-
 
 class TestConsoleLogger(unittest.TestCase):
     def test_numbers(self):
