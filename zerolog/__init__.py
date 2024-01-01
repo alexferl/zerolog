@@ -21,10 +21,21 @@ from ._globals import (
     _TimeFieldFormat as TimeFieldFormat,
     _TimestampFunc as TimestampFunc,
     _ExceptionHandler as ExceptionHandler,
+    _LevelColors as LevelColors,
+    _FormattedLevels as FormattedLevels,
     _set_global_level as set_global_level,
     _global_level as global_level,
     _disable_sampling as disable_sampling,
     _sampling_disabled as sampling_disabled,
+)
+from .console import ConsoleWriter
+from .constants import (
+    TimeFormatRFC3339,
+    TimeFormatRFC3339Ms,
+    TimeFormatRFC3339Micro,
+    TimeFormatUnix,
+    TimeFormatUnixMs,
+    TimeFormatUnixMicro,
 )
 from .context import Context
 from .event import Event
@@ -42,7 +53,6 @@ from .level import (
 )
 from .logger import Logger, new
 from .sampler import Sampler, BasicSampler, BurstSampler, LevelSampler, RandomSampler
-
 
 # GlobalLogger is the global logger.
 GlobalLogger = new(sys.stderr.buffer).ctx().timestamp().logger()

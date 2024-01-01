@@ -4,7 +4,8 @@ verify_ssl = true
 name = "pypi"
 
 [packages]
-
+python-dateutil = "==2.8.2"
+types-python-dateutil = "==2.8.19.14"
 
 [dev-packages]
 black = "==23.11.0"

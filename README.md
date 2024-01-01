@@ -2,6 +2,10 @@
 
 Python logging with zero setup JSON output.
 
+To keep the code base and the API simple, zerolog focuses on efficient structured logging only. Pretty logging on the console is made possible using the provided (but inefficient) [`zerolog.ConsoleWriter`](#pretty-logging).
+
+![Pretty Logging Image](pretty.png)
+
 ## Getting started
 
 ### Simple Logging Example
@@ -97,6 +101,37 @@ log.fatal().msg("this is very bad")
 
 # {"level":"fatal","time":"2023-12-15T00:22:03.664Z","message":"this is very bad"}
 # exit status 1
+```
+
+#### Pretty logging
+To log a human-friendly, colorized output, use `zerolog.ConsoleWriter`:
+
+```python
+import zerolog
+from zerolog import log
+
+zerolog.GlobalLogger = log.output(zerolog.ConsoleWriter(out=sys.stderr.buffer))
+
+log.info().str("foo", "bar").msg("Hello World")
+
+# 10:18PM INF Hello World foo=bar
+```
+
+To customize the configuration and formatting:
+```python
+import zerolog
+
+output = zerolog.ConsoleWriter(out=sys.stdout.buffer, time_format=zerolog.TimeFormatRFC3339)
+output.format_level = lambda i: f"| {i:6s}|".upper()
+output.format_message = lambda i: f"***{i}****"
+output.format_field_name = lambda i: f"{i}:"
+output.format_field_value = lambda i: f"{i}".upper()
+
+log = zerolog.new(output).ctx().timestamp().logger()
+
+log.info().str("foo", "bar").msg("Hello World")
+
+# 2023-12-23T23:11:48Z | INFO  | ***Hello World**** foo:BAR
 ```
 
 ### Log Sampling

@@ -1,4 +1,3 @@
-import builtins
 import sys
 from dataclasses import dataclass, field
 from datetime import datetime
@@ -79,7 +78,8 @@ class Event:
             self._buf = enc.append_line_break(self._buf)
             if self._w is not None:
                 self._w.write(self._buf)
-                self._w.seek(0)
+                if hasattr(self._w, "seek"):
+                    self._w.seek(0)
 
     # func allows an anonymous function to run only if the event is enabled.
     def func(self, f: Callable[["Event"], None]) -> "Event":
@@ -145,7 +145,7 @@ class Event:
             match type(m):
                 case None:
                     pass
-                case builtins.str:
+                case str():
                     self.str(zerolog.ExceptionStackFieldName, m)
                 case _:
                     if issubclass(m.__class__, Exception):
@@ -156,7 +156,7 @@ class Event:
         match type(m):
             case None:
                 return self
-            case builtins.str:
+            case str():
                 return self.str(zerolog.ExceptionFieldName, m)
             case _:
                 if issubclass(m.__class__, Exception):

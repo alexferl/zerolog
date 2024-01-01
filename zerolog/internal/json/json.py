@@ -3,8 +3,16 @@ from typing import Any, List
 
 import zerolog
 from zerolog import constants
+from zerolog.internal.util.time import convert_offset
 
 LEFT_BRACE = 123  # {
+
+_hex = "0123456789abcdef"
+_no_escape_table: List[bool] = [False] * 256
+
+for i in range(0x00, 0x7F):
+    # 0x20 space 0x5c \ 0x22 "
+    _no_escape_table[i] = i >= 0x20 and i != 0x5C and i != 0x22
 
 
 class Encoder:
@@ -115,11 +123,25 @@ class Encoder:
     @staticmethod
     def append_string(dst: bytes, s: str) -> bytes:
         dst += b'"'
-        for i in s:
-            dst += str.encode(i)
-
+        for i, _ in enumerate(s):
+            # Check if the character needs encoding. Control characters, slashes,
+            # and the double quote need json encoding. Bytes above the ascii
+            # boundary needs utf8 encoding.
+            try:
+                if not _no_escape_table[ord(s[i])]:
+                    # We encountered a character that needs to be encoded. Switch
+                    # to complex version of the algorithm.
+                    dst = append_string_complex(dst, s, i)
+                    dst += b'"'
+                    return dst
+            except IndexError:
+                dst = append_string_complex(dst, s, i)
+                dst += b'"'
+                return dst
+        # The string has no need for encoding and therefore is directly
+        # appended to the byte slice.
+        dst += str.encode(s)
         dst += b'"'
-
         return dst
 
     # append_strings encodes the input strings to json and
@@ -148,15 +170,14 @@ class Encoder:
             case constants.TimeFormatUnixMicro:
                 dst = self.append_int(dst, int(t.timestamp() * 1000000))
             case constants.TimeFormatRFC3339:
-                dst = self.append_string(dst, f'{t.isoformat(timespec="seconds")}Z')
+                s = f'{t.isoformat(timespec="seconds")}'
+                dst = self.append_string(dst, convert_offset(s))
             case constants.TimeFormatRFC3339Ms:
-                dst = self.append_string(
-                    dst, f'{t.isoformat(timespec="milliseconds")}Z'
-                )
+                s = f'{t.isoformat(timespec="milliseconds")}'
+                dst = self.append_string(dst, convert_offset(s))
             case constants.TimeFormatRFC3339Micro:
-                dst = self.append_string(
-                    dst, f'{t.isoformat(timespec="microseconds")}Z'
-                )
+                s = f'{t.isoformat(timespec="microseconds")}'
+                dst = self.append_string(dst, convert_offset(s))
             case _:
                 dst = self.append_string(dst, t.strftime(fmt))
 
@@ -179,3 +200,47 @@ class Encoder:
             dst += b","
         dst += o
         return dst
+
+
+# append_string_complex is used by append_string to take over an in
+# progress JSON string encoding that encountered a character that needs
+# to be encoded.
+def append_string_complex(dst: bytes, s: str, i: int) -> bytes:
+    start = 0
+    while i < len(s):
+        b = s[i]
+        if b > "\x80":
+            size = len(s.encode())
+            i += size
+            continue
+        if _no_escape_table[ord(b)]:
+            i += 1
+            continue
+        # We encountered a character that needs to be encoded.
+        # Let's append the previous simple characters to the byte slice
+        # and switch our operation to read and encode the remainder
+        # characters byte-by-byte.
+        if start < i:
+            dst += s[start:i].encode()
+        match b:
+            case "\x22" | "\x5c":  # " and space
+                dst += f"\\{b}".encode()
+            case "\x08":  # \b backspace
+                dst += f"\\b".encode()
+            case "\x0c":  # \f form feed
+                dst += f"\\f".encode()
+            case "\x0a":  # \n line feed
+                dst += f"\\n".encode()
+            case "\x0d":  # \r carriage return
+                dst += f"\\r".encode()
+            case "\x09":  # \t horizontal tab
+                dst += f"\\t".encode()
+            case _:
+                dst += b"\\u00"
+                dst += _hex[int.from_bytes(b.encode()) >> 4].encode()
+                dst += _hex[int.from_bytes(b.encode()) & 0xF].encode()
+        i += 1
+        start = i
+    if start < len(s):
+        dst += s[start:].encode()
+    return dst

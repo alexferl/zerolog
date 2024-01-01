@@ -45,6 +45,31 @@ class Level(IntEnum):
         return self.string()
 
 
+# parse_level converts a level string into a zerolog Level value.
+# raises an exception if the input string does not match known values.
+def parse_level(level_str: str) -> Level:
+    match level_str:
+        case zerolog.LevelTraceValue:
+            return TraceLevel
+        case zerolog.LevelDebugValue:
+            return DebugLevel
+        case zerolog.LevelInfoValue:
+            return InfoLevel
+        case zerolog.LevelWarnValue:
+            return WarnLevel
+        case zerolog.LevelErrorValue:
+            return ErrorLevel
+        case zerolog.LevelFatalValue:
+            return FatalLevel
+        case "disabled":
+            return Disabled
+        case "":
+            return NoLevel
+        case _:
+            raise Exception(f"{level_str} is not valid")
+
+
+TraceLevel = Level.TraceLevel
 DebugLevel = Level.DebugLevel
 InfoLevel = Level.InfoLevel
 WarnLevel = Level.WarnLevel
@@ -52,4 +77,3 @@ ErrorLevel = Level.ErrorLevel
 FatalLevel = Level.FatalLevel
 NoLevel = Level.NoLevel
 Disabled = Level.Disabled
-TraceLevel = Level.TraceLevel

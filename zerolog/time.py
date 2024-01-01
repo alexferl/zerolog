@@ -1,0 +1,14 @@
+ANSIC = "%a %-d %b %H:%M:%S %Y"  # Mon 2 Jan 15:04:05 2006
+UnixDate = "%a %-d %b %H:%M:%S %Z %Y"  # Mon Jan 2 15:04:05 MST 2006
+RFC822 = "%d %b %y %H:%M %Z"  # 02 Jan 06 15:04 MST
+RFC822Z = "%d %b %y %H:%M %z"  # 02 Jan 06 15:04 -0700 - RFC822 with numeric zone
+RFC850 = "%A, %d-%b-%y %H:%M:%S %Z"  # Monday, 02-Jan-06 15:04:05 MST
+RFC1123 = "%a, %d %b %Y %H:%M:%S %Z"  # Mon, 02 Jan 2006 15:04:05 MST
+RFC1123Z = "%a, %d %b %Y %H:%M:%S %z"  # Mon, 02 Jan 2006 15:04:05 -0700 - RFC1123 with numeric zone
+RFC3339 = "%Y-%m-%dT%H:%M:%S%z"  # 2006-01-02T15:04:05-0700
+Kitchen = "%-I:%M%p"  # 3:04PM
+Stamp = "%b %-m %H:%M:%S"  # Jan 2 15:04:05
+StampMicro = "%b %-m %H:%M:%S.%f"  # Jan 2 15:04:05.000000
+DateTime = "%Y-%m-%d %H:%M:%S"  # 2006-01-02 15:04:05
+DateOnly = "%Y-%m-%d"  # 2006-01-02
+TimeOnly = "%H:%M:%S"  # 15:04:05

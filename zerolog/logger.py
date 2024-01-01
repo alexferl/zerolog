@@ -176,7 +176,7 @@ class Logger:
         return True
 
 
-def new(w: IO | None) -> Logger:
+def new(w: IO | Any | None) -> Logger:
     return Logger(w)
 
 

@@ -1,8 +1,7 @@
-import datetime
 import unittest
 from dataclasses import dataclass
 
-from zerolog import Level, log
+from zerolog import Level
 from zerolog.sampler import Sampler, BasicSampler, BurstSampler, RandomSampler
 
 
