@@ -22,7 +22,7 @@ jobs:
           python-version: "${{ matrix.python-version }}"
       - uses: actions/checkout@v2
       - run: pip install -r requirements.txt -r requirements-dev.txt
-      - run: python -m unittest
+      - run: coverage run -m unittest
       - name: Upload coverage reports to Codecov
         uses: codecov/codecov-action@v3
         env:
