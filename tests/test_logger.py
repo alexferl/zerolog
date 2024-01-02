@@ -87,16 +87,18 @@ class TestLog(unittest.TestCase):
                 out: str
 
             tests = [
-                TestCase(zerolog.TimeFormatRFC3339, "2006-01-02T00:00:00"),
-                TestCase(zerolog.TimeFormatRFC3339Ms, "2006-01-02T00:00:00.000"),
-                TestCase(zerolog.TimeFormatRFC3339Micro, "2006-01-02T00:00:00.000000"),
+                TestCase(zerolog.TimeFormatRFC3339, "2006-01-02T00:00:00Z"),
+                TestCase(zerolog.TimeFormatRFC3339Ms, "2006-01-02T00:00:00.000Z"),
+                TestCase(zerolog.TimeFormatRFC3339Micro, "2006-01-02T00:00:00.000000Z"),
             ]
 
             for t in tests:
                 zerolog.TimeFieldFormat = t.fmt
                 out = io.BytesIO()
                 log = zerolog.new(out)
-                log.log().time("dt", datetime.datetime(2006, 1, 2)).send()
+                log.log().time(
+                    "dt", datetime.datetime(2006, 1, 2, tzinfo=datetime.UTC)
+                ).send()
                 got = decode_if_binary_to_string(out.read())
                 want = f'{{"dt":"{t.out}"}}\n'
                 self.assertEqual(want, got)
@@ -113,16 +115,18 @@ class TestLog(unittest.TestCase):
                 out: int
 
             tests = [
-                TestCase(zerolog.TimeFormatUnix, 1136178000),
-                TestCase(zerolog.TimeFormatUnixMs, 1136178000000),
-                TestCase(zerolog.TimeFormatUnixMicro, 1136178000000000),
+                TestCase(zerolog.TimeFormatUnix, 1136160000),
+                TestCase(zerolog.TimeFormatUnixMs, 1136160000000),
+                TestCase(zerolog.TimeFormatUnixMicro, 1136160000000000),
             ]
 
             for t in tests:
                 zerolog.TimeFieldFormat = t.fmt
                 out = io.BytesIO()
                 log = zerolog.new(out)
-                log.log().time("dt", datetime.datetime(2006, 1, 2)).send()
+                log.log().time(
+                    "dt", datetime.datetime(2006, 1, 2, tzinfo=datetime.UTC)
+                ).send()
                 got = decode_if_binary_to_string(out.read())
                 want = f'{{"dt":{t.out}}}\n'
                 self.assertEqual(want, got)
@@ -135,7 +139,9 @@ class TestLog(unittest.TestCase):
             zerolog.TimeFieldFormat = "%Y/%m/%d"
             out = io.BytesIO()
             log = zerolog.new(out)
-            log.log().time("dt", datetime.datetime(2006, 1, 2)).send()
+            log.log().time(
+                "dt", datetime.datetime(2006, 1, 2, tzinfo=datetime.UTC)
+            ).send()
             got = decode_if_binary_to_string(out.read())
             want = '{"dt":"2006/01/02"}\n'
             self.assertEqual(want, got)
