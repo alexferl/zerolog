@@ -178,7 +178,3 @@ class Logger:
 
 def new(w: IO | Any | None) -> Logger:
     return Logger(w)
-
-
-def nop() -> Logger:
-    return new(None).level(Level.Disabled)

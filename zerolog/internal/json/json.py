@@ -52,6 +52,7 @@ class Encoder:
     def append_bools(dst: bytes, vals: List[bool]) -> bytes:
         if len(vals) == 0:
             dst += b"[]"
+            return dst
         dst += b"["
         dst += f"{str(vals[0]).lower()}".encode()
         if len(vals) > 1:
@@ -74,6 +75,7 @@ class Encoder:
     def append_floats(dst: bytes, vals: List[float]) -> bytes:
         if len(vals) == 0:
             dst += b"[]"
+            return dst
         dst += b"["
         dst += f"{str(vals[0])}".encode()
         if len(vals) > 1:
@@ -96,6 +98,7 @@ class Encoder:
     def append_ints(dst: bytes, vals: List[int]) -> bytes:
         if len(vals) == 0:
             dst += b"[]"
+            return dst
         dst += b"["
         dst += f"{str(vals[0])}".encode()
         if len(vals) > 1:
