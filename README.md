@@ -7,6 +7,10 @@ To keep the code base and the API simple, zerolog focuses on efficient structure
 ![Pretty Logging Image](pretty.png)
 
 ## Getting started
+### Install
+```shell
+pip install python-zerolog
+```
 
 ### Simple Logging Example
 
