@@ -4,7 +4,7 @@ import zerolog
 
 
 # output duplicates the global logger and sets w as its output.
-def output(w: IO) -> zerolog.Logger:
+def output(w: IO | Any) -> zerolog.Logger:
     return zerolog.GlobalLogger.output(w)
 
 
